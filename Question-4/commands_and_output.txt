@@ -1,1 +1,67 @@
+========================================
+QUESTION 4 - FILE ACCESS AND I/O INVESTIGATION
+========================================
 
+1. lsof -p $$
+Output (key lines):
+zsh 2869 surya cwd DIR ... /Users/surya/Linux_Assignment/Question_4
+zsh 2869 surya 0u CHR ... /dev/ttys003
+zsh 2869 surya 1u CHR ... /dev/ttys003
+zsh 2869 surya 2u CHR ... /dev/ttys003
+Lists every file the current shell (PID 2869) has open. Descriptors 0,
+1, and 2 are stdin, stdout, and stderr - all connected to the terminal
+device /dev/ttys003. txt entries are the shell binary and its libraries.
+
+2. echo "standard output test" > out.txt
+Redirects standard output (descriptor 1) into out.txt instead of the
+screen.
+
+3. ls /nonexistent 2> err.txt
+Redirects standard error (descriptor 2) into err.txt, since the path
+does not exist and produces an error.
+
+4. cat out.txt
+Output: standard output test
+Confirms normal output was captured in out.txt.
+
+5. cat err.txt
+Output: ls: /nonexistent: No such file or directory
+Confirms the error message went to err.txt - the two streams were
+separated into different files.
+
+6. ls /etc /nonexistent > combined.txt 2>&1
+Sends BOTH stdout and stderr into one file. 2>&1 means "point
+descriptor 2 to wherever descriptor 1 goes."
+
+7. cat combined.txt
+Output: the error line ("/nonexistent: No such file or directory")
+followed by the full /etc directory listing.
+Confirms both streams merged into a single file - the valid /etc output
+and the error appear together.
+
+8. ulimit -n
+Output: 2560
+Shows the maximum number of file descriptors a single process may open
+at once (2560).
+
+9. ulimit -a
+Output:
+-t cpu time: unlimited
+-f file size: unlimited
+-d data seg size: unlimited
+-s stack size: 8176
+-c core file size: 0
+-v address space: unlimited
+-l locked-in memory: unlimited
+-u processes: 2666
+-n file descriptors: 2560
+Lists all resource limits enforced on processes - CPU time, file size,
+stack size, max processes (2666), and open file descriptors (2560).
+
+EXPLANATION - How Linux/Unix manages file I/O:
+Everything is treated as a file, and each open file gets a numbered
+descriptor. Descriptors 0, 1, 2 are stdin, stdout, stderr. Redirection
+operators (>, 2>, 2>&1) reassign these descriptors, letting us separate
+normal output from errors. Resource limits (ulimit) cap how many files a
+process can open, preventing runaway processes - key knowledge for
+diagnosing logging and I/O issues.
