@@ -1,1 +1,40 @@
+========================================
+QUESTION 1 - LINUX ENVIRONMENT VERIFICATION
+========================================
 
+1. whoami
+Output: surya
+Prints the current logged-in username. Confirmed I am user "surya".
+
+2. id
+Output: uid=501(surya) gid=20(staff) groups=20(staff),12(everyone),
+80(admin),204(_developer),399(com.apple.access_ssh)...
+Shows user ID, primary group, and all groups. Membership in "admin"
+gives this account administrative privileges.
+
+3. groups
+Output: staff everyone localaccounts admin _developer
+com.apple.access_ssh ...
+Lists all groups the account belongs to, which control access to
+files and system resources.
+
+4. echo $SHELL
+Output: /bin/zsh
+The $SHELL variable holds the path to the active login shell (zsh).
+
+5. pwd
+Output: /Users/surya/Linux_Assignment/Question_1
+Prints the absolute path of the current working directory.
+
+6. ls -la
+Output: total 0
+drwxr-xr-x 2 surya staff 64 .
+drwxr-xr-x 7 surya staff 224 ..
+Lists all files including hidden ones with permissions, owner, and
+size. Directory is empty apart from . and .. references.
+
+7. ping -c 3 google.com
+Output: 3 packets transmitted, 3 received, 0.0% packet loss
+round-trip min/avg/max = 26.599/30.359/35.037 ms
+Sent 3 ICMP packets and received all 3 with no loss, confirming a
+working internet connection.
