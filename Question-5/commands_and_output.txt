@@ -1,1 +1,46 @@
+========================================
+QUESTION 5 - STORAGE HEALTH ASSESSMENT
+========================================
 
+Note: On macOS, diskutil and df are used. diskutil replaces the Linux
+lsblk command; df -h and df -i work the same as on Linux.
+
+1. diskutil list
+Output (key lines):
+/dev/disk0 (internal, physical): 500.3 GB, GUID_partition_scheme
+  disk0s2  Apple_APFS Container  494.3 GB
+/dev/disk3 (synthesized): APFS Container 494.3 GB
+  disk3s1  Macintosh HD        12.6 GB
+  disk3s5  Macintosh HD - Data 60.3 GB
+Lists all physical and synthesized disks. The internal drive is 500.3 GB
+with a 494.3 GB APFS container split into system and data volumes. On
+macOS diskutil is used in place of Linux's lsblk.
+
+2. df -h  (mounted filesystems + disk usage)
+Output (key lines):
+Filesystem      Size  Used  Avail  Capacity  Mounted on
+/dev/disk3s1s1  460Gi 12Gi  382Gi  3%        /
+/dev/disk3s5    460Gi 56Gi  382Gi  13%       /System/Volumes/Data
+Shows each mounted filesystem with its size, used/available space, and
+use%. The root filesystem is mounted at / and is only 3% full, with
+382Gi still available.
+
+3. df -i  (inode utilization)
+Output (key lines):
+Filesystem      iused   ifree       %iused  Mounted on
+/dev/disk3s1s1  458725  4009731920  0%      /
+/dev/disk3s5    339506  4009731920  0%      /System/Volumes/Data
+Shows used vs free inodes. Root uses 458,725 inodes out of ~4 billion
+available - 0% utilization. A filesystem can fail to create files if
+inodes run out, even with free disk space, so this is worth checking.
+
+4. Storage health observations
+Disk usage is very low (3% on root, 13% on the data volume) and inode
+usage is effectively 0%. There is 382Gi of free space and billions of
+free inodes. The storage is healthy with no filesystem near capacity.
+
+5. Recommendations
+- Clear caches and temporary files regularly.
+- Archive or compress old logs.
+- Monitor fast-growing directories.
+- Set alerts before any filesystem exceeds ~80% capacity.
