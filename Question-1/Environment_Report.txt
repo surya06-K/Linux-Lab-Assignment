@@ -1,1 +1,27 @@
+Environment Report — Linux Environment Verification
+====================================================
 
+1. Username and groups
+Command: whoami ; groups
+Observation: whoami returns the logged-in username. groups lists every
+group the account belongs to, which controls file and resource access.
+
+2. Current shell
+Command: echo $SHELL
+Observation: The $SHELL variable stores the path to the active login
+shell. Here it is /bin/zsh, the default interactive shell.
+
+3. Current working directory
+Command: pwd
+Observation: pwd prints the absolute path of the directory the shell is
+currently in, confirming our location in the filesystem.
+
+4. Files and directories in workspace
+Command: ls -la
+Observation: ls -la lists all entries including hidden ones, along with
+permissions, owner, group, size, and modification time.
+
+5. Network connectivity
+Command: ping -c 3 google.com
+Observation: ping sent 3 ICMP packets and received 3 replies with 0%
+packet loss, confirming a working internet connection.
