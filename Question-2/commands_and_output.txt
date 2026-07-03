@@ -1,1 +1,41 @@
 
+========================================
+QUESTION 2 - SECURE PROJECT WORKSPACE SETUP
+========================================
+
+1. umask
+Output: 022
+Shows the default permission mask. 022 means new directories default
+to 755 and new files to 644.
+
+2. mkdir -p secure_project/docs
+Created a workspace folder with a nested docs folder in one command
+using the -p flag.
+
+3. touch secure_project/docs/plan.txt
+Created an empty file to hold project documentation.
+
+4. ls -la secure_project/docs  (BEFORE)
+Output: -rw-r-----  1 surya  staff  0  plan.txt
+Lists the file with its default permissions before modification.
+
+5. chmod 700 secure_project
+Restricted the workspace to owner-only access (read, write, execute
+for surya; nothing for group or others).
+
+6. chmod 640 secure_project/docs/plan.txt
+Set the file to owner read/write, group read-only, others no access.
+
+7. ls -la secure_project/docs  (AFTER)
+Output: -rw-r-----  1 surya  staff  0  plan.txt
+Confirms plan.txt is now 640 - owner rw, group r, others none.
+
+8. ls -ld secure_project
+Output: drwx------  3 surya  staff  secure_project
+Confirms the directory is 700 (drwx------), private to owner surya,
+group staff.
+
+EXPLANATION - How permissions protect project data:
+Setting the workspace to 700 ensures only the owner can enter or modify
+it, while 640 on the file lets trusted group members read but not alter
+it - enforcing least-privilege access to sensitive project data.
