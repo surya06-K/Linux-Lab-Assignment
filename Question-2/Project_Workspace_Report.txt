@@ -1,1 +1,30 @@
 
+Project Workspace Report — Secure Project Workspace Setup
+=========================================================
+
+1. Directory structure created
+Command: mkdir -p secure_project/docs
+Observation: Created a parent workspace with a nested docs folder in a
+single command using the -p flag.
+
+2. File permissions before and after modification
+Before: drwxr-xr-x (755) on the directory, -rw-r--r-- (644) on plan.txt.
+After chmod 700 / 640:
+Command: chmod 700 secure_project ; chmod 640 secure_project/docs/plan.txt
+Observation: The directory is now accessible only by the owner, and the
+file is readable by owner and group but hidden from others.
+
+3. Ownership details
+Command: ls -ld secure_project
+Observation: Owner and group are shown as my user and staff; ownership
+determines who the permission bits apply to.
+
+4. Umask value used
+Command: umask
+Observation: umask masks default permissions off new files. A value of
+022 means new directories default to 755 and files to 644.
+
+5. How permissions protect project data
+Restricting the workspace to 700 ensures only the owner can enter or
+modify it, while 640 on the file lets trusted group members read but not
+alter it — enforcing least-privilege access to sensitive project data.
