@@ -1,1 +1,32 @@
+Storage Assessment Report — Storage Health Assessment
+=====================================================
 
+1. Available storage devices
+Command: diskutil list
+Observation: Listed all physical and synthesized disks with their
+partition schemes and identifiers (e.g., disk0, disk1s1).
+
+2. Mounted file systems
+Command: df -h
+Observation: Showed each mounted filesystem, its mount point, and the
+device backing it. The root filesystem is mounted at /.
+
+3. Disk usage statistics
+Command: df -h
+Observation: Reported total size, used space, available space, and use%
+for each filesystem, revealing how much capacity remains.
+
+4. Inode utilization
+Command: df -i
+Observation: Showed used vs free inodes. Even with free disk space, a
+filesystem can fail to create files if inodes are exhausted.
+
+5. Storage health observations
+Disk usage is within safe limits with adequate free space and inodes
+available. No filesystem is near capacity.
+
+6. Recommendations for improving storage utilization
+- Clear caches and temporary files regularly.
+- Archive or compress old logs.
+- Monitor high-growth directories.
+- Set up alerts before usage exceeds ~80%.
