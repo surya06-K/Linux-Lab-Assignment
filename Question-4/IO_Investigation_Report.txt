@@ -1,1 +1,28 @@
 
+IO Investigation Report — File Access and I/O Investigation
+===========================================================
+
+1. Open files identified
+Command: lsof -p $$
+Observation: lsof listed every file the current shell has open, including
+the terminal device and shared libraries. Each row is an open file the
+kernel tracks.
+
+2. File descriptor observations
+Every process starts with descriptors 0 (stdin), 1 (stdout), 2 (stderr).
+lsof shows these plus any additional files the process opened.
+
+3. Output and error redirection results
+Command: > out.txt (stdout), 2> err.txt (stderr), > file 2>&1 (both)
+Observation: Normal output went to out.txt, the error message from the bad
+path went to err.txt, and 2>&1 merged both streams into combined.txt.
+
+4. Resource limits observed
+Command: ulimit -n ; ulimit -a
+Observation: ulimit -n showed the max number of file descriptors a process
+may open; ulimit -a listed all soft limits (file size, processes, memory).
+
+5. How Linux manages file I/O
+Linux/Unix treats everything as a file and gives each open file a
+descriptor. Redirection operators reassign descriptors 1 and 2, letting us
+separate normal output from errors — key for diagnosing logging issues.
