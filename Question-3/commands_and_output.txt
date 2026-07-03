@@ -1,1 +1,52 @@
+========================================
+QUESTION 3 - FILE SYSTEM AND LINK ANALYSIS
+========================================
 
+1. echo "original file content" > original.txt
+Created the original file with some text content.
+
+2. ln original.txt hardlink.txt
+Created a hard link - a second name pointing to the same inode/data.
+
+3. ln -s original.txt symlink.txt
+Created a symbolic link - a small file storing the path to original.txt.
+
+4. ls -li
+Output:
+1280961 -rw-r--r-- 2 surya staff hardlink.txt
+1280961 -rw-r--r-- 2 surya staff original.txt
+1281340 lrwxr-xr-x 1 surya staff symlink.txt -> original.txt
+original.txt and hardlink.txt share the SAME inode (1280961) and a link
+count of 2, proving they point to one physical file. symlink.txt has a
+different inode (1281340) and points to original.txt by name.
+
+5. stat original.txt hardlink.txt symlink.txt
+Output: original.txt and hardlink.txt both show inode 1280961, link
+count 2, size 22 bytes. symlink.txt shows inode 1281340, size 12 bytes.
+Confirms the hard link raised the link count to 2, while the symlink is
+a separate tiny file holding just the path.
+
+6. rm original.txt
+Deleted the original file to observe the effect on both links.
+
+7. ls -li (after deletion)
+Output:
+1280961 -rw-r--r-- 1 surya staff hardlink.txt
+1281340 lrwxr-xr-x 1 surya staff symlink.txt -> original.txt
+hardlink.txt still exists with the same inode, but its link count
+dropped from 2 to 1. symlink.txt still points to the now-missing name.
+
+8. cat hardlink.txt
+Output: original file content
+Still works - the data survives because the inode's link count is not
+yet zero.
+
+9. cat symlink.txt
+Output: cat: symlink.txt: No such file or directory
+Broken (dangling) link - the path it stored (original.txt) no longer
+exists.
+
+EXPLANATION - Hard link vs symbolic link:
+A hard link is another directory entry for the same inode, so it shares
+the data and survives deletion of the original name. A symbolic link
+only stores a path, so it breaks when the target is removed.
